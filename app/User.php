@@ -23,6 +23,12 @@ class User extends Authenticatable
      *
      * @var array
      */
+    public function isAdmin() {
+        return ($this->role == 2);
+    }
+    public function raksti() {
+        return $this->hasMany('App\Raksts');
+    }
     protected $hidden = [
         'password', 'remember_token',
     ];
