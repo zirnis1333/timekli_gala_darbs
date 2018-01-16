@@ -36,10 +36,7 @@ class HomeController extends Controller
             return view('admin_list', array('title' => trans('custom.posts'), 'raksti' => auth()->user()->raksti()->get()));
         }
     }
-    public function about()
-    {
-        return view('about');
-    }
+
 
 
 

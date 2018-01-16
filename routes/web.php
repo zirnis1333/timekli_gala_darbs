@@ -15,7 +15,6 @@ Auth::routes();
 Route::get('/', 'RakstsController@index');
 Route::get('/valoda/{locale}', 'UserController@setLocale');
 Route::get('home', 'HomeController@faq');
-//Route::resource('conference', 'ConferenceController', ['except' => ['edit', 'update', 'destroy']]);
 Route::get('/raksti', 'RakstsController@userRaksti');
 
 Route::get('/Raksts/Izveidot', 'RakstsController@create');
@@ -31,7 +30,7 @@ Route::get('Admin/Raksti/neapstiprinati', 'RakstsController@unaccepted');
 Route::post('Admin/Raksti/neapstiprinati', 'RakstsController@statusChange');
 
 Route::get('/sort/{sort}', 'UserController@sort');
-Route::get('/about', 'HomeController@about');
+Route::get('/about', 'UserController@about');
 
 Route::get('/admin', 'HomeController@admin');
 Route::get('Tags/list', 'TagsController@listed');
@@ -39,27 +38,6 @@ Route::get('Tags/create', 'TagsController@create');
 Route::post('Tags/create', 'TagsController@store');
 Route::get('Tags/Edit/{id}', 'TagsController@edit');
 Route::post('Tags/Edit/{id}', 'TagsController@update');
-
-
-
-
-/*Route::get('/home', 'HomeController@index')->name('home');
-Route::get('admin', 'AdminController');
-Route::resource('country', 'CountryController', ['only' => ['create', 'store']]);
-Route::resource('city', 'CityController', ['only' => ['create', 'store']]);
-Route::resource('discount', 'DiscountController', ['only' => ['create', 'store']]);
-Route::get('countries/conferences', 'ConferenceController@indexByCountry');
-Route::get('conferences/search','ConferenceController@getSearch');
-Route::post('conferences/search','ConferenceController@postSearch');
-
-
-
-Route::get('/registration/{id}', 'RegistrationController@create');
-Route::post('/registration/{id}', 'RegistrationController@store');*/
-
-/*Route::get('/', function () {
-    return view('home');
-});*/
 
 Auth::routes();
 
