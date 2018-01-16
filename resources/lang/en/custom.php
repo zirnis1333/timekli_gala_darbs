@@ -32,6 +32,10 @@ return [
     'save' => "Save",
     'author' => "Author",
     'delete' => "Delete",
+    'newest' => "Newest",
+    'oldest' => "Oldest",
+    'sort' => "Sorting",
+
 
 
 

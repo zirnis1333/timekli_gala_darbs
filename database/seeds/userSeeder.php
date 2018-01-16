@@ -29,6 +29,7 @@ class userSeeder extends Seeder
             'password' => bcrypt('miks123'),
             'created_at' => now(),
             'updated_at' => now(),
+            'sort'=>2,
         ]);
         DB::table('users')->insert([
             'name' => 'Janis',

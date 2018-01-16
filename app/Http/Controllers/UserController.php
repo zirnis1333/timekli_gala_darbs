@@ -29,4 +29,22 @@ class UserController extends Controller
 
         return back();
     }
+    public function sort($sort)
+    {
+        if(\Auth::check())
+        {
+            $user = User::find(\Auth::user()->id);
+            if($sort=="asc")
+            {
+                $user->sort = 1;
+            }
+            else
+            {
+                $user->sort = 2;
+            }
+
+            $user->save();
+        }
+        return back();
+    }
 }

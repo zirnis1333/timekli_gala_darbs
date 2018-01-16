@@ -21,8 +21,18 @@ class RakstsController extends Controller
 */
     public function index()
     {
-        $raksti=Raksts::all()->where('akceptets','=',true)->load("tagi");
+        if( \Auth::check() && User::find(\Auth::user()->id)->sort==2)
+        {
+            $raksti=Raksts::all()->where('akceptets','=',true)->load("tagi")->sortByDesc('updated_at');
 
+
+        }
+        else
+        {
+            $raksti=Raksts::all()->where('akceptets','=',true)->load("tagi")->sortBy('updated_at');
+
+
+        }
         foreach ($raksti as $raksts)
         {
             $raksts->tagi->load('tags');
@@ -289,6 +299,8 @@ class RakstsController extends Controller
         }
         return redirect('/');
     }
+
+
 
 
 

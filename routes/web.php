@@ -30,7 +30,7 @@ Route::post('Admin/Raksti/visi', 'RakstsController@statusChange');
 Route::get('Admin/Raksti/neapstiprinati', 'RakstsController@unaccepted');
 Route::post('Admin/Raksti/neapstiprinati', 'RakstsController@statusChange');
 
-Route::post('/sendMail', 'HomeController@mail');
+Route::get('/sort/{sort}', 'UserController@sort');
 Route::get('/about', 'HomeController@about');
 
 Route::get('/admin', 'HomeController@admin');

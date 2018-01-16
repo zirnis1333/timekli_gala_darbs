@@ -34,6 +34,10 @@ return [
     'save' => "Saglabāt",
     'author' => "Autors",
     'delete' => "Izdzēst",
+    'newest' => "Jaunākie",
+    'oldest' => "Vecākie",
+    'sort' => "Kārtošana",
+
 
 
 

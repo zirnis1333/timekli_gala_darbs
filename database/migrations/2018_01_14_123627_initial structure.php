@@ -20,7 +20,7 @@ class InitialStructure extends Migration
             $table->text('noskelts');
             $table->integer('user_id');
             $table->integer('akceptets')->default(false);
-            $table->integer('sort')->default(1);
+
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
         });

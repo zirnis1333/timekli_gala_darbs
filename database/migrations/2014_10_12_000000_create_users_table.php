@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('locale', 5)->default('en');
             $table->integer('role')->unsigned()->default(1);
+            $table->integer('sort')->default(1);
             $table->rememberToken();
             $table->timestamps();
 
