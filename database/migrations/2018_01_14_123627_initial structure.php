@@ -19,9 +19,8 @@ class InitialStructure extends Migration
             $table->text('saturs');
             $table->text('noskelts');
             $table->integer('user_id');
-            $table->date('izveidots')->default(now());
-            $table->date('atjaunots')->default(now());
             $table->integer('akceptets')->default(false);
+            $table->integer('sort')->default(1);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
         });

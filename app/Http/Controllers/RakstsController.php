@@ -25,16 +25,8 @@ class RakstsController extends Controller
 
         foreach ($raksti as $raksts)
         {
-
             $raksts->tagi->load('tags');
-          //  foreach ($raksts->tagi as $tags)
-          //  {
-            //    dd($tags->tags->tags);
-         //   }
-
         }
-
-
         return view('raksts_preview', array('title' =>  trans('custom.posts'), 'raksti' => $raksti));
     }
 
@@ -61,25 +53,37 @@ class RakstsController extends Controller
     public function edit($id)
     {
 
+        if(\Auth::check() && (\Auth::user()->isAdmin() ||   Raksts::find($id)->user_id==User::find(\Auth::user()->id)->id))
+        {
+            $tagi=' ';
+            $raksts=Raksts::find($id)->load("tagi");
+            $raksts->tagi->load('tags');
 
-        $tagi=' ';
-        $raksts=Raksts::find($id)->load("tagi");
-        $raksts->tagi->load('tags');
+            foreach ($raksts->tagi as $tags)
+            {
+                $tagi=$tagi.$tags->tags->tags.',';
+            }
+            return view('raksts_edit', array('title' => trans('custom.post'), 'raksts' =>Raksts::find($id),'tagi' =>$tagi,'create' =>false));
 
-          foreach ($raksts->tagi as $tags)
-          {
-              $tagi=$tagi.$tags->tags->tags.',';
-          }
+        }
+        else
+        {
+            return redirect('/');
+        }
 
 
-
-
-        return view('raksts_edit', array('title' => trans('custom.post'), 'raksts' =>Raksts::find($id),'tagi' =>$tagi,'create' =>false));
     }
     public function userRaksti()
     {
+        if(\Auth::check())
+        {
+            return view('raksts_list', array('title' =>  trans('custom.posts'), 'raksti' =>auth()->user()->raksti()->get()));
 
-        return view('raksts_list', array('title' =>  trans('custom.posts'), 'raksti' =>auth()->user()->raksti()->get()));
+        }
+        else
+        {
+            return redirect('/');
+        }
     }
     public function show($id)
     {
@@ -94,155 +98,167 @@ class RakstsController extends Controller
 
             return view('raksts_view', array('title' =>  trans('custom.post'), 'raksts' =>$raksts));
 
-          //  else
-          //  {
-             //  return redirect()->home();
 
-          //  }
        }
-        else if(\Auth::check() && \Auth::user()->isAdmin()  )
+        else if(\Auth::check() && (\Auth::user()->isAdmin()  || Raksts::find($id)->user_id==User::find(\Auth::user()->id)->id))
         {
             return redirect('/raksts/edit/'.$id);
             //return view('raksts_view', array('title' => 'Raksts', 'raksts' =>Raksts::find($id)));
         }
-       else if(\Auth::check() && Raksts::find($id)->user_id==User::find(\Auth::user()->id)->id)
-       {
-           return redirect('/raksts/edit/'.$id);
-           //return redirect()->route();
-
-          //  return view('raksts_edit', array('title' => 'Raksta Editors', 'raksts' =>Raksts::find($id)));
-       }
-
-
+        else
+        {
+            return redirect('/');
+        }
 
     }
     public function all()
     {
-        return view('raksts_list', array('title' => trans('custom.posts'), 'raksti' =>Raksts::all()));
+        if(\Auth::check() && \Auth::user()->isAdmin() )
+        {
+            return view('raksts_list', array('title' => trans('custom.posts'), 'raksti' =>Raksts::all()));
+
+        }
+
     }
     public function unaccepted()
     {
-        return view('raksts_list', array('title' =>  trans('custom.posts'), 'raksti' =>Raksts::all()->where('akceptets','=',false)));
+        if(\Auth::check() && \Auth::user()->isAdmin() )
+        {
+            return view('raksts_list', array('title' =>  trans('custom.posts'), 'raksti' =>Raksts::all()->where('akceptets','=',false)));
+
+        }
     }
     public function store(Request $request)
     {
-        $data = $request->all();
-        $rules = $rules = array(
-            'saturs' => 'required|min:30',
-            'nosaukums' => 'required|min:3',
-        );
-
-        $this->validate($request, $rules);
-
-        $raksts = new Raksts();
-        $raksts->nosaukums=$data['nosaukums'];
-        $raksts->saturs=$data['saturs'];
-
-
-        if (strlen($data['saturs']) > 500)
+        if (\Auth::check())
         {
-            $raksts->noskelts = substr($data['saturs'], 0, 500);
-        }
-        else
-        {
-            $raksts->noskelts=$data['saturs'];
-        }
+            $data = $request->all();
+            $rules = $rules = array(
+                'saturs' => 'required|min:30',
+                'nosaukums' => 'required|min:3',
+            );
+
+            $this->validate($request, $rules);
+
+            $raksts = new Raksts();
+            $raksts->nosaukums=$data['nosaukums'];
+            $raksts->saturs=$data['saturs'];
 
 
-        $user = User::find(\Auth::user()->id);
-
-
-
-        $raksts->user()->associate($user);
-
-
-
-        $raksts->save();
-
-
-        $tagi=Tags::all();
-        $offset=0;
-        $tagsNew='';
-        //dd("pirms:".$data['tagi']);
-        $data['tagi']=" ".$data['tagi'];
-        //dd(strpos($data['tagi'],'"',$offset));
-        while($pos=strpos($data['tagi'],'"',$offset))
-        {
-            // dd("cikla:".$pos);
-            $posEnd=strpos($data['tagi'],'"',$pos+1);
-            $tagsNew = substr($data['tagi'], $pos+1, $posEnd-$pos-1);
-            $found=false;
-            if (strlen($tagsNew) > 2)
+            if (strlen($data['saturs']) > 500)
             {
-                foreach ($tagi as $tags)
+                $raksts->noskelts = substr($data['saturs'], 0, 500);
+            }
+            else
+            {
+                $raksts->noskelts=$data['saturs'];
+            }
+
+
+            $user = User::find(\Auth::user()->id);
+
+
+
+            $raksts->user()->associate($user);
+
+
+
+            $raksts->save();
+
+
+            $tagi=Tags::all();
+            $offset=0;
+
+            $data['tagi']=" ".$data['tagi'];
+
+            while($pos=strpos($data['tagi'],'"',$offset))
+            {
+
+                $posEnd=strpos($data['tagi'],'"',$pos+1);
+                $tagsNew = substr($data['tagi'], $pos+1, $posEnd-$pos-1);
+                $found=false;
+                if (strlen($tagsNew) > 2)
                 {
-                    if($tags->tags==$tagsNew)
+                    foreach ($tagi as $tags)
                     {
+                        if($tags->tags==$tagsNew)
+                        {
+                            $rakstaTags = new Raksta_tagi();
+                            $rakstaTags->raksts()->associate($raksts);
+                            $rakstaTags->tags()->associate($tags);
+                            $rakstaTags->save();
+                            $found=true;
+                            break;
+                        }
+                    }
+                    if(!$found)
+                    {
+                        $jaunsTags = new Tags();
+                        $jaunsTags->tags=$tagsNew;
+                        $jaunsTags->save();
                         $rakstaTags = new Raksta_tagi();
                         $rakstaTags->raksts()->associate($raksts);
-                        $rakstaTags->tags()->associate($tags);
+                        $rakstaTags->tags()->associate($jaunsTags);
                         $rakstaTags->save();
-                        $found=true;
-                        break;
                     }
+
                 }
-                if(!$found)
-                {
-                    $jaunsTags = new Tags();
-                    $jaunsTags->tags=$tagsNew;
-                    $jaunsTags->save();
-                    $rakstaTags = new Raksta_tagi();
-                    $rakstaTags->raksts()->associate($raksts);
-                    $rakstaTags->tags()->associate($jaunsTags);
-                    $rakstaTags->save();
-                }
+
+                $offset=$posEnd+1;
+
+
 
             }
 
-            $offset=$posEnd+1;
-
-
-
+            Mail::to(auth()->user()->email)->send(new mails());
+            return redirect('/')->withMessage( trans('custom.postAdded'));
+        }
+        else
+        {
+            return redirect('/');
         }
 
-        Mail::to(auth()->user()->email)->send(new mails());
-      //  $mail->()->send(new mails());
-        return redirect('/')->withMessage( trans('custom.postAdded'));
+
 
     }
     public function update(Request $request)
     {
-        $data = $request->all();
-        $rules = $rules = array(
-            'saturs' => 'required|min:30',
-            'nosaukums' => 'required|min:3',
-        );
-
-        $this->validate($request, $rules);
-
-        $raksts=Raksts::find($data['id']);
-        $raksts->nosaukums=$data['nosaukums'];
-        $raksts->saturs=$data['saturs'];
-
-
-        if (strlen($data['saturs']) > 500)
+        if (\Auth::check() && (\Auth::user()->isAdmin() || Raksts::find($id)->user_id == User::find(\Auth::user()->id)->id))
         {
-            $raksts->noskelts = substr($data['saturs'], 0, 500);
+            $data = $request->all();
+
+            $rules = $rules = array(
+                'saturs' => 'required|min:30',
+                'nosaukums' => 'required|min:3',
+            );
+
+            $this->validate($request, $rules);
+
+            $raksts = Raksts::find($data['id']);
+            $raksts->nosaukums = $data['nosaukums'];
+            $raksts->saturs = $data['saturs'];
+
+
+            if (strlen($data['saturs']) > 500) {
+                $raksts->noskelts = substr($data['saturs'], 0, 500);
+            }
+
+
+            $user = User::find(\Auth::user()->id);
+
+
+            $raksts->user()->associate($user);
+
+
+            $raksts->save();
+
+            return redirect('/')->withMessage(trans('custom.postChanged'));
+
         }
-
-
-        $user = User::find(\Auth::user()->id);
-
-
-
-        $raksts->user()->associate($user);
-
-
-
-        $raksts->save();
-
-        return redirect('/')->withMessage(trans('custom.postChanged'));
-
+        else
+        {
+            return redirect('/');
+        }
     }
     public function statusChange(Request $request)
     {

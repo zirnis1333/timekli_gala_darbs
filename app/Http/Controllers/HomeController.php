@@ -31,17 +31,14 @@ class HomeController extends Controller
     }
     public function admin()
     {
-        return view('admin_list', array('title' => trans('custom.posts'), 'raksti' =>auth()->user()->raksti()->get()));
+        if (\Auth::check() && \Auth::user()->isAdmin() )
+        {
+            return view('admin_list', array('title' => trans('custom.posts'), 'raksti' => auth()->user()->raksti()->get()));
+        }
     }
     public function about()
     {
         return view('about');
-    }
-    public function mail()
-        {
-            $mail = new Mail();
-        $mail->to(auth()->user()->email)->send(new mails());
-        redirect()->back();
     }
 
 

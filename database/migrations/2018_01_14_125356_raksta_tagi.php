@@ -19,7 +19,6 @@ class RakstaTagi extends Migration
             $table->integer('tags_id');
             $table->foreign('tags_id')->references('id')->on('raksts');
             $table->foreign('raksts_id')->references('id')->on('users');
-            $table->timestamps();
         });
     }
 

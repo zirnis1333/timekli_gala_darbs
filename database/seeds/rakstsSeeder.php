@@ -21,6 +21,9 @@ class rakstsSeeder extends Seeder
 <p class="part">U-boats operated primarily on the surface using regular engines, submerging occasionally to attack under battery power. They were roughly <strong>triangular</strong> in cross-section, with a distinct keel to control rolling while surfaced, and a distinct bow. During World War I more than <em>5,000</em> Allied ships were sunk by U-boats</p>'),
                      'user_id' => 1,
             'akceptets' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+
         ]);
 
         DB::table('raksts')->insert([
@@ -33,6 +36,9 @@ class rakstsSeeder extends Seeder
 <p class="part">The Royal Navy Submarine Service was used primarily in the classic Axis blockade. Its major operating areas were around Norway, in the Mediterranean (against the Axis supply routes to North Africa), and in the Far East. In that war, British submarines sank 2 million tons of enemy shipping and 57 major warships, the latter including 35 submarines. Among these is the only documented instance of a submarine sinking another submarine while both were submerged. This occurred when HMS Venturer engaged the U864 the Venturer crew manually computed a successful firing solution against a three-dimensionally maneuvering target using techniques which became the basis of modern torpedo computer targeting systems. Seventy-four British submarines were lost, the majority, 42, in the Mediterranean.</p>'),
             'user_id' => 1,
             'akceptets' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+
         ]);
         DB::table('raksts')->insert([
             'nosaukums' => 'History Cold War',
@@ -40,6 +46,9 @@ class rakstsSeeder extends Seeder
             'saturs' =>addslashes('<p>The first launch of a cruise missile (SSM-N-8 Regulus) from a submarine occurred in July 1953, from the deck of USS Tunny, a World War II fleet boat modified to carry the missile with a nuclear warhead. Tunny and its sister boat, Barbero, were the United States\' first nuclear deterrent patrol submarines. In the 1950s, nuclear power partially replaced diesel-electric propulsion. Equipment was also developed to extract oxygen from sea water. These two innovations gave submarines the ability to remain submerged for weeks or months. Most of the naval submarines built since that time in the US, the Soviet Union/Russian Federation, Britain, and France have been powered by nuclear reactors. In 1959&ndash;1960, the first ballistic missile submarines were put into service by both the United States (George Washington class) and the Soviet Union (Golf class) as part of the Cold War nuclear deterrent strategy.</p>'),
             'user_id' => 3,
             'akceptets' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+
         ]);
         DB::table('raksts')->insert([
             'nosaukums' => 'Attack Submarines - SSN',
@@ -48,6 +57,9 @@ class rakstsSeeder extends Seeder
 <p class="part">Attack submarines may be either nuclear-powered or diesel-electric ("conventionally") powered. In the United States Navy naming system, and in the equivalent NATO system (STANAG 1166), nuclear-powered attack submarines are known as SSNs and their diesel-electric predecessors were SSKs. In the US Navy, SSNs are unofficially called&nbsp;<em>fast attacks</em>.</p>'),
             'user_id' => 3,
             'akceptets' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+
         ]);
         DB::table('raksts')->insert([
             'nosaukums' => 'Fleet Ballistic Missile Submarines - SSBN',
@@ -55,6 +67,9 @@ class rakstsSeeder extends Seeder
             'saturs' =>addslashes('<p>A ballistic missile submarine is a submarine deploying submarine-launched ballistic missiles (SLBMs) with nuclear warheads. The United States Navy\'s hull classification symbols for ballistic missile submarines are SSB and SSBN - the SS denotes submarine (or submersible ship), the B denotes ballistic missile, and the N denotes that the submarine is nuclear-powered. These submarines became a major weapon system in the Cold War because of their nuclear deterrence capability. They can fire missiles thousands of kilometers from their targets, and acoustic quieting makes them difficult to detect (see acoustic signature), thus making them a survivable deterrent in the event of a first strike and a key element of the mutual assured destruction policy of nuclear deterrence. Their deployment has been dominated by the United States and the Soviet Union / Russia, with smaller numbers in service with France, the United Kingdom, China, and most recently India.</p>'),
             'user_id' => 1,
             'akceptets' => false,
+            'created_at' => now(),
+            'updated_at' => now(),
+
         ]);
     }
 }
