@@ -12,9 +12,9 @@
 
                                 <h4 align="center"> {{ $raksts['nosaukums'] }}</h4>
                                 <div class="col-md-12">
-                                    <div> <p>{{ $raksts['noskelts'] }} <a href="/">Lasīt tālāk</a></p> </div>
+                                    <div> <p>{{ $raksts['noskelts'] }} <a href="/">{{trans('custom.tags')}}</a></p> </div>
 
-                                    <div>Tagi: {{ $raksts['id'] }} </div>
+                                    <div>{{trans('custom.tags')}}: {{ $raksts['id'] }} </div>
                                 </div>
                             </div>
                         @endforeach

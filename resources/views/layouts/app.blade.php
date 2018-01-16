@@ -41,36 +41,14 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        <li><a href="/">Sākums</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
-                                Valstis <span class="caret"></span>
-                            </a>
-
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        Logout
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        {{ csrf_field() }}
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
-
-
-                        <li><a href="/countries/conferences">FAQ</a></li>
-                        <li><a href="/conferences/search">Meklēšana</a></li>
+                        <li><a href="/">{{trans('custom.start')}}</a></li>
+                        <li><a href="/about">{{trans('custom.about')}}</a></li>
                         @if ( !Auth::guest() )
-                            <li><a href="/raksti">Mani Raksti</a></li>
-                            <li><a href="/NewRaksts">Pievienot jaunu rakstu</a></li>
+                            <li><a href="/raksti">{{trans('custom.mine')}}</a></li>
+                            <li><a href="/Raksts/Izveidot">{{trans('custom.newPost')}}</a></li>
                         @endif
                         @if ( !Auth::guest() && Auth::user()->isAdmin() )
-                            <li><a href="/admin">Admin</a></li>
+                            <li><a href="/admin">{{trans('custom.admin')}}</a></li>
                         @endif
 
 
@@ -79,6 +57,8 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
+                        <li><a href="/valoda/lv">lv</a></li>
+                        <li><a href="/valoda/en">en</a></li>
                         @guest
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>

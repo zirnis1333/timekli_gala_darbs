@@ -10,13 +10,13 @@
                         <table  class="table table-bordered  table-condensed" >
                             <thead>
                             <tr>
-                                <th>Nosaukums</th>
-                                <th>Izveidots</th>
-                                <th>Pēdējā atjaunošna</th>
-                                <th>Akceptēts</th>
+                                <th>{{trans('custom.name')}}</th>
+                                <th>{{trans('custom.created')}}</th>
+                                <th>{{trans('custom.updated')}}</th>
+                                <th>{{trans('custom.accepted')}}</th>
 
-                                @if( Auth::user()->isAdmin() && isset($admin))
-                                    <th>Autors</th>
+                                @if( Auth::user()->isAdmin())
+                                    <th>{{trans('custom.author')}}</th>
                                 @endif
                             </tr>
                             </thead>
@@ -28,7 +28,23 @@
                                     <td>{{$raksts->nosaukums}}</td>
                                     <td>{{$raksts->izveidots}}</td>
                                     <td>{{$raksts->atjaunots}}</td>
-                                    <td>{{$raksts->akceptets}}</td>
+                                    <td>
+                                        {!! Form::open([  'class' => 'form-horizontal']) !!}
+                                        <input type="hidden" name="id" value={{$raksts->id}}
+                                        ><br>
+                                        <input class="accepted
+ @if(!Auth::user()->isAdmin())
+                                                 disabled
+@endif
+" type="checkbox" name="accepted" value={{$raksts->akceptets}}
+                                        @if( $raksts->akceptets==1)
+                                                checked
+                                                @endif
+                                        ><br>
+                                        {!! Form::close() !!}
+                                    </td>
+                                    <td><a href="/raksts/delete/{{$raksts->id}}">{{trans('custom.delete')}}</a></td>
+
 
                                 </tr>
 
@@ -40,28 +56,32 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
+    <script >
 
         jQuery(document).ready(function($) {
 
-            $(document.getElementsByClassName("paid")).each(function( index,object ) {
+            $(document.getElementsByClassName("accepted")).each(function( index,object ) {
 
                 $(object).click(function(object,index)
                 {
-                    event.stopImmediatePropagation()
-                    if($(this).hasClass("checked"))
+                    if(!$(this).hasClass("disabled"))
                     {
-                        $(this).removeClass("checked");
+                        event.stopImmediatePropagation()
+                        if($(this).hasClass("checked"))
+                        {
+                            $(this).removeClass("checked");
 
-                        this.value=0;
-                    }
-                    else
-                    {
-                        $(this).addClass("checked");
+                            this.value=0;
+                        }
+                        else
+                        {
+                            $(this).addClass("checked");
 
-                        this.value=1;
+                            this.value=1;
+                        }
+                        $(this.parentNode ).submit();
                     }
-                    $(this.parentNode ).submit();
+
                 });
             });
             $(".clickable-row").click(function()
